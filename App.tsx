@@ -205,6 +205,13 @@ const App: React.FC = () => {
         const saved = localStorage.getItem('portfolio_projects');
         if (saved) {
              const parsed = JSON.parse(saved);
+             
+             // [Critical Fix] Validate that parsed is actually an array
+             if (!Array.isArray(parsed)) {
+                 console.warn("LocalStorage data corrupted (not an array). Resetting to defaults.");
+                 return INITIAL_PROJECTS;
+             }
+
              // Data Migration: Convert old 'videoUrl' string to 'videoUrls' array
              return parsed.map((p: any) => {
                  if (!p.videoUrls) {
@@ -218,6 +225,7 @@ const App: React.FC = () => {
         }
         return INITIAL_PROJECTS;
     } catch (e) {
+        console.error("Failed to load/parse projects from localStorage:", e);
         return INITIAL_PROJECTS;
     }
   });

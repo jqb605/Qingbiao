@@ -296,9 +296,10 @@ const Admin: React.FC<AdminProps> = ({ projects, setProjects, onLogout }) => {
                         <div key={idx} className="flex gap-2">
                            <input 
                               type="text" 
-                              placeholder="Paste YouTube Link (e.g. youtube.com/watch?v=...)"
+                              placeholder="Paste YouTube/Vimeo Link"
                               value={url}
                               onChange={(e) => updateVideoUrl(idx, e.target.value)}
+                              // Auto trim whitespace on blur
                               onBlur={(e) => updateVideoUrl(idx, e.target.value.trim())}
                               className="flex-1 bg-neutral-950 border border-neutral-800 rounded p-3 text-white focus:border-amber-700 focus:outline-none text-sm"
                             />
@@ -340,9 +341,9 @@ const Admin: React.FC<AdminProps> = ({ projects, setProjects, onLogout }) => {
                     />
                   </div>
                   <p className="text-[10px] text-neutral-500 mt-2 leading-relaxed">
-                    [中文说明] 支持 YouTube 普通链接、Shorts 链接和 Vimeo 链接。
+                    [中文说明] 支持 YouTube (Watch/Shorts/Embed) 和 Vimeo 链接。
                     <br/>
-                    [Note] Supports standard YouTube, Shorts, and Vimeo links.
+                    [Note] Supports YouTube (Watch/Shorts) and Vimeo links.
                   </p>
                 </div>
               </div>

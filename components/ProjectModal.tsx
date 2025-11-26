@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Project } from '../types';
-import { X, Calendar, User, Clapperboard } from 'lucide-react';
+import { X, Calendar, User, Clapperboard, AlertCircle } from 'lucide-react';
 
 interface ProjectModalProps {
   project: Project;
@@ -17,42 +17,51 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
     };
   }, []);
 
-  // Helper to determine if the video URL is an embed (YouTube/Vimeo) or a direct file
-  const isEmbed = (url: string) => {
+  // Helper to determine if the video URL is an embed service (YouTube/Vimeo)
+  const isEmbedService = (url: string) => {
     const lower = url.toLowerCase();
     return lower.includes('youtube.com') || lower.includes('youtu.be') || lower.includes('vimeo.com');
   };
 
-  // Helper to convert standard URLs to Embed URLs
-  const getEmbedUrl = (url: string) => {
-    if (!url) return '';
+  // Helper to convert standard URLs to valid Embed URLs
+  const getEmbedInfo = (url: string) => {
+    if (!url) return { url: '', isValid: false };
     const cleanUrl = url.trim();
     
-    // YouTube Regex
-    // Robustly captures the 11-character Video ID from:
-    // - youtube.com/watch?v=ID
-    // - youtube.com/embed/ID
-    // - youtube.com/shorts/ID
-    // - youtube.com/v/ID
-    // - youtu.be/ID
-    const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
-    const youtubeMatch = cleanUrl.match(youtubeRegex);
-    
-    if (youtubeMatch && youtubeMatch[1]) {
-      // Return clean embed URL with rel=0 to prevent related videos from other channels
-      return `https://www.youtube.com/embed/${youtubeMatch[1]}?rel=0`;
+    // 1. YouTube Handling
+    if (cleanUrl.toLowerCase().includes('youtu')) {
+        // Robust regex for ID extraction
+        // Matches: youtube.com/watch?v=ID, /embed/ID, /shorts/ID, youtu.be/ID
+        const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+        const match = cleanUrl.match(youtubeRegex);
+        
+        if (match && match[1]) {
+           return {
+             url: `https://www.youtube.com/embed/${match[1]}?rel=0&autoplay=0`,
+             isValid: true
+           };
+        }
+        // If it looks like YouTube but regex fails, return invalid to prevent "refused to connect" errors
+        return { url: cleanUrl, isValid: false, error: "Invalid YouTube URL format" };
     }
 
-    // Vimeo Regex
-    // Captures ID from vimeo.com/ID or player.vimeo.com/video/ID
-    const vimeoRegex = /(?:vimeo\.com\/|player\.vimeo\.com\/video\/)([0-9]+)/;
-    const vimeoMatch = cleanUrl.match(vimeoRegex);
-    if (vimeoMatch && vimeoMatch[1]) {
-      return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+    // 2. Vimeo Handling
+    if (cleanUrl.toLowerCase().includes('vimeo')) {
+        // Matches: vimeo.com/123, player.vimeo.com/video/123, vimeo.com/channels/.../123
+        const vimeoRegex = /(?:vimeo\.com\/(?:.*\/)?|player\.vimeo\.com\/video\/)([0-9]+)/;
+        const match = cleanUrl.match(vimeoRegex);
+        
+        if (match && match[1]) {
+           return {
+             url: `https://player.vimeo.com/video/${match[1]}?title=0&byline=0&portrait=0`,
+             isValid: true
+           };
+        }
+        return { url: cleanUrl, isValid: false, error: "Invalid Vimeo URL format" };
     }
 
-    // Fallback: Return original if parsing failed but it looks like a link
-    return cleanUrl;
+    // 3. Direct File (mp4, etc.)
+    return { url: cleanUrl, isValid: true, isFile: true };
   };
 
   return (
@@ -73,7 +82,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
             alt={project.title} 
             className="w-full h-full object-cover" 
           />
-          {/* Subtle gradient to ensure text readability without hiding image color */}
+          {/* Subtle gradient */}
           <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-transparent to-transparent opacity-90" />
           
           <button 
@@ -109,37 +118,50 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
                 {project.description}
               </p>
 
-              {/* Video Section - Now loops through multiple videos */}
+              {/* Video Section */}
               {project.videoUrls && project.videoUrls.length > 0 && (
                 <div className="mt-8">
                   <h3 className="text-xl font-medium text-white border-b border-neutral-800 pb-2 mb-4 flex items-center">
                      <Clapperboard className="mr-2" size={20}/> Video Documentation
                   </h3>
-                  <div className="space-y-6">
-                    {project.videoUrls.map((url, index) => {
-                      const embedUrl = getEmbedUrl(url);
-                      const showIframe = isEmbed(url);
+                  <div className="space-y-8">
+                    {project.videoUrls.map((rawUrl, index) => {
+                      // Skip empty strings
+                      if (!rawUrl || !rawUrl.trim()) return null;
+
+                      const { url, isValid, isFile, error } = getEmbedInfo(rawUrl);
 
                       return (
-                        <div key={index} className="relative pt-[56.25%] bg-black rounded-lg overflow-hidden border border-neutral-800 shadow-lg">
-                          {showIframe ? (
-                            <iframe 
-                              src={embedUrl} 
-                              className="absolute top-0 left-0 w-full h-full"
-                              title={`${project.title} video ${index + 1}`}
-                              frameBorder="0"
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                              allowFullScreen
-                            />
-                          ) : (
-                            <video 
-                              src={url}
-                              controls
-                              className="absolute top-0 left-0 w-full h-full object-contain"
-                            >
-                              Your browser does not support the video tag.
-                            </video>
-                          )}
+                        <div key={index} className="w-full">
+                           <div className="relative pt-[56.25%] bg-black rounded-lg overflow-hidden border border-neutral-800 shadow-lg">
+                            {isFile ? (
+                              <video 
+                                src={url}
+                                controls
+                                className="absolute top-0 left-0 w-full h-full object-contain"
+                              >
+                                Your browser does not support the video tag.
+                              </video>
+                            ) : isValid ? (
+                              <iframe 
+                                src={url} 
+                                className="absolute top-0 left-0 w-full h-full"
+                                title={`${project.title} video ${index + 1}`}
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowFullScreen
+                              />
+                            ) : (
+                              <div className="absolute inset-0 flex flex-col items-center justify-center text-neutral-500 bg-neutral-900">
+                                <AlertCircle size={32} className="mb-2 text-red-800" />
+                                <p>Video unavailable</p>
+                                <p className="text-xs mt-1 text-neutral-600">{error || "Check URL format"}</p>
+                                <a href={rawUrl} target="_blank" rel="noreferrer" className="text-xs text-amber-600 hover:text-amber-500 mt-2 underline">
+                                  Try opening link directly
+                                </a>
+                              </div>
+                            )}
+                          </div>
                         </div>
                       );
                     })}
