@@ -29,7 +29,7 @@ export const INITIAL_PROJECTS: Project[] = [
       'https://vimeo.com/1140451636?fl=ip&fe=ec',
       'https://vimeo.com/1140490350?fl=ip&fe=ec'
     ],
-    castAndCrew: 'Directed by: Qingbiao Jia\nCast: Xinyi Du, Kangqian Hu, Sha Liao\nDuration: 60 mins\nRoles: Director/ Playwright/ Technical Developer/ Composer & Sound Designer',
+    castAndCrew: 'Directed and Written by: Qingbiao Jia\nProducer: Yangxueying Zhan\nTechnical Developer: Qingbiao Jia\nComposer & Sound Designer: Qingbiao Jia, Jiarun Li\nCast: Xinyi Du, Kangqian Hu, Sha Liao\nDuration: 60 mins',
   },
   {
     id: '2',
@@ -43,7 +43,7 @@ export const INITIAL_PROJECTS: Project[] = [
       'https://i.postimg.cc/N0jy5r5n/default_(15).jpg',
     ],
     videoUrls: ['https://vimeo.com/1140506926?fl=tl&fe=ec'],
-    castAndCrew: 'Directed and Written by: Qingbiao Jia\nDuration: 30 mins\nRoles: Director/ Playwright/ Composer & Sound Designer',
+    castAndCrew: 'Directed and Written by: Qingbiao Jia\nProducer: Jiahua Tai\nLighting Designer: Qingbiao Jia\nDigital Media Art Designer: Qingbiao Jia\nComposer & Sound Designer: Qingbiao Jia\nDuration: 60 mins',
   },
   {
     id: '3',
@@ -61,7 +61,7 @@ export const INITIAL_PROJECTS: Project[] = [
       'https://vimeo.com/1140506864?fl=tl&fe=ec',
       'https://vimeo.com/1140506799?fl=tl&fe=ec'
     ],
-    castAndCrew: 'Directed and Written by: Qingbiao Jia\nDuration: 65 mins\nRoles: Director/Actor',
+    castAndCrew: 'Directed by:Qingbiao Jia\nWritten by:Xiaotong Cai\nProducer:Yukun Luo\nMakeup&Hair Designer:He Bai\nCast: Qingbiao Jia,Yizhenhong Xu, Tianyang Song\nDuration: 65 mins',
   },
     {
     id: '4',
@@ -81,14 +81,14 @@ export const INITIAL_PROJECTS: Project[] = [
       'https://vimeo.com/1140506985?fl=tl&fe=ec',
       'https://vimeo.com/1140507141?fl=tl&fe=ec'
     ],
-    castAndCrew: 'Directed and Written by: Qingbiao Jia\nDuration: 70 mins\nRoles: Director/Playwright/Actor',
+    castAndCrew: 'Directed and Written by: Qingbiao Jia\nProducer: Jiahua Tai\nCast:Qingbiao Jia, Haohan Ge, Huacheng Fan, Yuhan Zhou\nDuration: 70 mins',
   },
     {
     id: '5',
     title: 'In the Peach Blossom Land',
     category: 'Drama',
     year: '2023',
-    description: 'I treat folk stories not as fixed historical scenes to be reproduced, but as living expressive resources — symbolic and affective logics that can be abstracted, recomposed, and put into dialogue with contemporary media. In my practice the work’s atmosphere and staged conditions serve as a container for this ongoing re-interpretation rather than as an end in themselves.\n\nIn the macro-historical narrative of Logoverse, I employ multimedia and AI technologies to stage dialogues between a character (portrayed by myself) and a large-scale AI model. These exchanges both interpret and deepen the drama and produce a Brechtian alienation effect (Verfremdungseffekt), deliberately redirecting the audience’s attention back to the issues and phenomena under scrutiny.\n\nMultimedia functions as interpretation and extension: by shaping image, light and interaction I aim to make traditional vocabularies perceivable in new ways — preserving cultural reference while opening them to contemporary meanings. My goal is not to digitize tradition, but to stage a respectful conversation in which traditional aesthetics resonate within today’s media and public discourse.',
+    description: 'On the eve of the Lunar New Year, the unemployed and down-and-out middle-aged man, Lao Si, came to an old residential area called Taoyuanli that was on the verge of demolition in search of his missing wife. Here he met Lu Ziye and firmly believed that he was the one his wife had cheated on. The two didn‘t hit it off, yet they seemed to have known each other for a long time. Lu Ziye’s girlfriend and a young couple who want to buy a house suddenly showed up uninvited, making this strange night even more confusing. A long-buried past will gradually unfold as everyone‘s memories are intertwined.',
     coverImage: 'https://i.postimg.cc/TYn5Sx8x/default_(39).jpg',
     galleryImages: [
       'https://i.postimg.cc/Jhs1f3yT/default_(42).jpg',
@@ -100,7 +100,7 @@ export const INITIAL_PROJECTS: Project[] = [
       'https://vimeo.com/1140506620?fl=tl&fe=ec',
       'https://vimeo.com/1140506522?fl=tl&fe=ec'
     ],
-    castAndCrew: 'Directed by: Qingbiao Jia\nDuration: 70 mins\nRoles: Director/Playwright',
+    castAndCrew: 'Directed by: Qingbiao Jia\nCast: Yizhenhong Xu, Dongmao Li, Kefan Chen, Yutong Jiang\nDuration: 90 mins',
   },
     {
     id: '6',
@@ -117,6 +117,7 @@ export const INITIAL_PROJECTS: Project[] = [
       'https://vimeo.com/1140492683?fl=ip&fe=ec',
       'https://vimeo.com/1140511587?fl=tl&fe=ec'
       ],
+      castAndCrew: 'Directed by: Qingbiao Jia\nPiano Accompaniment:Peng Liu\nDuration: 60 mins',
   },
 ];
 
